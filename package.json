@@ -1,33 +1,20 @@
 {
-  "name": "url-shortener",
-  "version": "1.0.0",
-  "description": "NodeJS, Express, and MongoDB Url Shortening Microservice",
-  "main": "app.js",
+  "name": "shorturl",
+  "version": "0.0.3",
+  "description": "API project for freeCodeCamp",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Renestl/url-shortener.git"
-  },
-  "keywords": [
-    "url shortening",
-    "microservice",
-    "url shortener"
-  ],
-  "author": "Jennifer Currie",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Renestl/url-shortener/issues"
-  },
-  "homepage": "https://github.com/Renestl/url-shortener#readme",
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "dotenv": "^4.0.0",
-    "express": "^4.15.2",
-    "mongoose": "^4.8.6",
-    "shortid": "^2.2.8",
-    "valid-url": "^1.0.9"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
