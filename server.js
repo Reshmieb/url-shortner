@@ -1,9 +1,9 @@
-
 'use strict';
 
 var express = require('express');
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+var shortid = require('shortid');
 
 var cors = require('cors');
 
@@ -37,7 +37,7 @@ app.listen(port, function () {
 });
 
 /* Database Connection */
-let uri = 'mongodb+srv://user1:' + process.env.PW + '@freecodecamp.b0myq.mongodb.net/db1?retryWrites=true&w=majority'
+let uri = 'mongodb://localhost:27017/project1'
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let urlSchema = new mongoose.Schema({
@@ -49,23 +49,22 @@ let Url = mongoose.model('Url', urlSchema)
 
 let bodyParser = require('body-parser')
 let responseObject = {}
-app.post('/api/shorturl/new', bodyParser.urlencoded({ extended: false }) , (request, response) => {
-  let inputUrl = request.body['url']
+app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }) , (request, response) => {
+  console.log(request.body.url);
+  let inputUrl = request.body.url
+  let suffix = shortid;
+  let newShortUrl = suffix;
   
-  let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
-  
-  if(!inputUrl.match(urlRegex)){
-    response.json({error: 'Invalid URL'})
-    return
-  }
-    
+  const httpRegex = /^(http|https)(:\/\/)/;
+    if (!httpRegex.test(inputUrl)) {return response.json({ error: 'invalid url' })}
+
   responseObject['original_url'] = inputUrl
   
   let inputShort = 1
   
   Url.findOne({})
         .sort({short: 'desc'})
-        .exec((error, result) => {
+        .exec((error, result) => {      
           if(!error && result != undefined){
             inputShort = result.short + 1
           }
@@ -82,8 +81,7 @@ app.post('/api/shorturl/new', bodyParser.urlencoded({ extended: false }) , (requ
               }
             )
           }
-  })
-  
+     })
 })
 
 app.get('/api/shorturl/:input', (request, response) => {
